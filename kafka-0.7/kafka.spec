@@ -80,6 +80,7 @@ mkdir -p %{buildroot}/var/log/kafka
 
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/bin          %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/contrib      %{buildroot}/%{kafka_home}/
+cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/config       %{buildroot}/%{kafka_home}/config-sample
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/core         %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/examples     %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/clients      %{buildroot}/%{kafka_home}/
