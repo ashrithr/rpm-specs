@@ -1,0 +1,126 @@
+#  %define macro allows you to define new macros from within your spec file
+%define
+
+#
+# HEADER
+#   Summary: one line description of the package.
+#   Name: name string from the rpm filename you plan to use.
+#   Version: version string from the rpm filename you plan to use.
+#   Release: release number for a package of the same versio
+#   Copyright: tells how a package is copyrighted
+#   Group: group that the package belongs to in a higher level package tool or the Red Hat installer.
+#   Source: points at the HOME location of the pristine source file, These files would go in the SOURCES directory
+#           Ex: Source0: packagename.tgz
+#               Source1: sysdefault
+#               Source2: initscript
+#   Patch:  place you can find the patch if you need to download it again, These files would go in the SOURCES directory.
+#   BuildRoot: Allows to specify a directory as the 'root' for building and installing new package
+#              Ex: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
+#   Requires & Provides: to describe the dependency relationships between packages
+#
+# Only the name, version, release, and source lines have a direct bearing on the package building process.
+#
+
+#
+# %description
+# multi-line field that should be used to give a comprehensive description of the package
+#
+%description
+
+#
+# Each of these sections is really just a place to execute shell scripts.
+#
+
+#
+# %prep
+# It is in the %prep section that the build environment for the software is created,
+# starting with removing the remnants of any previous builds.
+# (Here you need to do anything necessary to get the sources patched and setup like they
+#   need to be setup to do a make.)
+# Any sh constructs can be used here, including expansion of environment variables
+# %setup is a macro -  In its simplest form (no command line options), it simply unpacks the sources
+#                      and cd's into the source directory. It also takes the following option
+#   -n name => will set the name of the build dir, defualt is $NAME-$VERSION
+#   -c => will create and cd to the named dir before doing the untar
+#   -b => will untar source befire cd'ing into dir
+#   -a => will untar source after cd'ing into dir
+#   -T => This option overrides the default action of untarring the Source and
+#         requires a -b 0 or -a 0 to get the main source file untarred
+#   -D => do not delete the dir before unpacking
+#
+# %patch macro - helps automate the process of applying patches to the sources
+#
+%prep
+%setup
+
+#
+# %build
+# responsible for performing the build, %build section is an ordinary sh script
+# You should just put any commands here that you would need to use to build the software once you had
+# untarred the source, patched it, and cd'ed into the directory.
+#
+%build
+
+#
+# %clean - macro to clean build root after building the package
+# put the proper commands there to blow away a former build root
+#
+%clean
+rm -rf %{buildroot}
+
+#
+# %install
+# install section is executed as a sh script
+# You basically just want to put whatever commands here that are necessary to install, If you have make install
+# available to you in the package you are building, put that here. If not, you can either patch the makefile for
+# a make install and just do a make install here, or you can hand install them here with sh commands.
+#
+%install
+
+#
+# %files
+# This is the section where you must list the files for the binary package
+# Macros available =>
+#   %doc - used to mark documentation in the source package that you want installed in binary install
+#   %config - used to mark configuration files in a package
+#   %dir - marks a single directory in a file list to be included as being owned by a package
+#   %defattr allows you to set default attributes for files listed after the defattr declaration
+#     Ex: %defattr(-,%{pkg_user},%{pkg_group})
+#   %files -f <filename> will allow you to list your files in some arbitrary file within the build directory of the sources
+#
+%files
+
+#
+# %pre (optional) - macro to do pre-install scripts
+#
+%pre
+getent group %{pkg_group} >/dev/null || groupadd -r %{pkg_group}
+getent passwd %{pkg_user} >/dev/null || /usr/sbin/useradd --comment "Pakage Daemon User" --shell /bin/bash -M -r -g %{pkg_group} --home %{pkg_home} %{pkg_user}
+
+#
+# %post (optional) - macro to do post-install scripts
+#
+%post
+chkconfig --add %{pkg_name}
+
+#
+# %preun (optional) - macro to do pre-uninstall scripts
+#
+%preun
+service %{pkg_name} stop > /dev/null 2>&1
+chkconfig --del %{pkg_name}
+
+#
+# %postun (optional) - macro to do post-uninstall scripts
+#
+%postun
+service %{pkg_name} restart >/dev/null 2>&1
+
+#
+# %changelog
+# This is a log of what changes occurred when the package is updated. If you are modifying an existing RPM
+# it is a good idea to list what changes you made here.
+#
+%changelog
+* Sun Jun 03 2012 Ankus <ankus@cloudwick.com> [0.7.2-1]
+- Initial Build Release 0.7.2.
