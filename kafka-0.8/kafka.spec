@@ -80,7 +80,6 @@ mkdir -p %{buildroot}/%{etc_kafka}
 
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-beta1-src/bin          %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-beta1-src/contrib      %{buildroot}/%{kafka_home}/
-cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-beta1-src/config       %{buildroot}/%{kafka_home}/config
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-beta1-src/config       %{buildroot}/%{kafka_home}/config-sample
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-beta1-src/core         %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-beta1-src/examples     %{buildroot}/%{kafka_home}/
