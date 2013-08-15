@@ -4,7 +4,7 @@
 %define release_version 1
 %define kafka_home /opt/%{kafka_name}-%{kafka_version}
 %define etc_kafka /etc/%{name}
-%define config_kafka %{etc_kafka}/conf
+%define config_kafka %{etc_kafka}/config
 %define kafka_user kafka
 %define kafka_group kafka
 
@@ -73,13 +73,14 @@ pwd
 mkdir -p %{buildroot}/%{kafka_home}/
 mkdir -p %{buildroot}/%{kafka_home}/config/
 mkdir -p %{buildroot}/%{_initrddir}
-mkdir -p %{buildroot}/etc/
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/
 mkdir -p %{buildroot}/%{_sysconfdir}/security/limits.d/
 mkdir -p %{buildroot}/var/log/kafka
+mkdir -p %{buildroot}/%{etc_kafka}
 
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-beta1-src/bin          %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-beta1-src/contrib      %{buildroot}/%{kafka_home}/
+cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-beta1-src/config       %{buildroot}/%{kafka_home}/config
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-beta1-src/config       %{buildroot}/%{kafka_home}/config-sample
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-beta1-src/core         %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-beta1-src/examples     %{buildroot}/%{kafka_home}/
@@ -92,8 +93,8 @@ cd %{buildroot}/opt/
 ln -s %{kafka_name}-%{kafka_version} %{kafka_name}
 cd -
 
-cd %{buildroot}/etc
-ln -s %{kafka_home}/config %{kafka_name}
+cd %{buildroot}/%{etc_kafka}
+ln -s %{kafka_home}/config config
 cd -
 
 cp %_sourcedir/kafka-server       %{buildroot}/%{_initrddir}/kafka-server

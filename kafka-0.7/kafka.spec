@@ -76,6 +76,7 @@ mkdir -p %{buildroot}/%{_initrddir}
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/
 mkdir -p %{buildroot}/%{_sysconfdir}/security/limits.d/
 mkdir -p %{buildroot}/var/log/kafka
+mkdir -p %{buildroot}/%{etc_kafka}
 
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/bin          %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/contrib      %{buildroot}/%{kafka_home}/
@@ -92,8 +93,8 @@ cd %{buildroot}/opt/
 ln -s %{kafka_name}-%{kafka_version} %{kafka_name}
 cd -
 
-cd %{buildroot}/etc
-ln -s %{kafka_home}/config %{etc_kafka}
+cd %{buildroot}/%{etc_kafka}
+ln -s %{kafka_home}/config config
 cd -
 
 cp %_sourcedir/kafka-server       %{buildroot}/%{_initrddir}/kafka-server
