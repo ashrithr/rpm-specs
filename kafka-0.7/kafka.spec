@@ -4,7 +4,7 @@
 %define release_version 1
 %define kafka_home /opt/%{kafka_name}-%{kafka_version}
 %define etc_kafka /etc/%{kafka_name}
-%define config_kafka %{etc_kafka}/conf
+%define config_kafka %{etc_kafka}/config
 %define kafka_user kafka
 %define kafka_group kafka
 
@@ -73,21 +73,17 @@ pwd
 mkdir -p %{buildroot}/%{kafka_home}/
 mkdir -p %{buildroot}/%{kafka_home}/config/
 mkdir -p %{buildroot}/%{_initrddir}
-mkdir -p %{buildroot}/etc/
-mkdir -p %{buildroot}/%{config_kafka}
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/
 mkdir -p %{buildroot}/%{_sysconfdir}/security/limits.d/
 mkdir -p %{buildroot}/var/log/kafka
 
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/bin          %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/contrib      %{buildroot}/%{kafka_home}/
-cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/config       %{buildroot}/%{kafka_home}/conf
+cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/config       %{buildroot}/%{kafka_home}/config
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/config       %{buildroot}/%{kafka_home}/config-sample
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/core         %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/examples     %{buildroot}/%{kafka_home}/
-cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/clients      %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/lib          %{buildroot}/%{kafka_home}/
-cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/lib_managed  %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/perf         %{buildroot}/%{kafka_home}/
 cp -r %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/project      %{buildroot}/%{kafka_home}/
 cp %{_builddir}/%{kafka_name}-%{kafka_version}-incubating-src/sbt             %{buildroot}/%{kafka_home}/
@@ -97,7 +93,7 @@ ln -s %{kafka_name}-%{kafka_version} %{kafka_name}
 cd -
 
 cd %{buildroot}/etc
-ln -s %{kafka_home}/config %{kafka_name}
+ln -s %{kafka_home}/config %{etc_kafka}
 cd -
 
 cp %_sourcedir/kafka-server       %{buildroot}/%{_initrddir}/kafka-server
@@ -123,7 +119,6 @@ getent passwd %{kafka_user} >/dev/null || /usr/sbin/useradd --comment "Kafka Dae
 
 %post
 chkconfig --add %{kafka_name}-server
-ln -s %{kafka_home}/conf %{config_kafka}
 chown -R kafka:kafka /var/log/zookeeper /var/log/kafka
 
 %preun
