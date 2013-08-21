@@ -4,9 +4,8 @@
 %define release_version 1
 %define storm_home /opt/%{storm_name}-%{storm_version}
 %define etc_storm /etc/%{name}
-%define config_storm %{etc_storm}/conf
 %define storm_user storm
-%define strom_group storm
+%define storm_group storm
 
 Name: %{storm_name}
 Version: %{storm_version}
@@ -65,7 +64,8 @@ The Supervisor listens for work assigned to its machine and starts and stops
 worker processes as necessary based on what Nimbus has assigned to it.
 
 %prep
-%setup -n %{storm_name}-%{storm_version}
+rm -rf %{buildroot}
+%setup -q -n %{storm_name}-%{storm_version}
 
 %build
 echo 'log4j.rootLogger=INFO, R
@@ -103,8 +103,6 @@ cp -r %{_builddir}/%{storm_name}-%{storm_version}/conf         %{buildroot}/%{st
 cp -r %{_builddir}/%{storm_name}-%{storm_version}/lib          %{buildroot}/%{storm_home}/
 cp -r %{_builddir}/%{storm_name}-%{storm_version}/log4j        %{buildroot}/%{storm_home}/
 cp -r %{_builddir}/%{storm_name}-%{storm_version}/public       %{buildroot}/%{storm_home}/
-cp -r %{_builddir}/%{storm_name}-%{storm_version}/project      %{buildroot}/%{storm_home}/
-cp %{_builddir}/%{storm_name}-%{storm_version}-beta1-src/sbt   %{buildroot}/%{storm_home}/
 
 cd %{buildroot}/opt/
 ln -s %{storm_name}-%{storm_version} %{storm_name}
@@ -114,7 +112,7 @@ cd %{buildroot}/%{etc_storm}
 ln -s %{storm_home}/conf conf
 cd -
 
-cp %_sourcedir/storm-numbus       %{buildroot}/%{_initrddir}/storm-nimbus
+cp %_sourcedir/storm-nimbus       %{buildroot}/%{_initrddir}/storm-nimbus
 cp %_sourcedir/storm-ui           %{buildroot}/%{_initrddir}/storm-ui
 cp %_sourcedir/storm-supervisor   %{buildroot}/%{_initrddir}/storm-supervisor
 cp %_sourcedir/storm              %{buildroot}/%{_sysconfdir}/sysconfig/storm
@@ -139,9 +137,9 @@ getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Dae
 /opt/%{storm_name}
 %{storm_home}
 %{storm_home}/*
-%{storm_home}/bin/*.properties
 %attr(755,%{storm_user},%{storm_group}) %{storm_home}/bin/*
 /etc/storm/
+/etc/rc.d/
 /var/log/*
 /var/run/storm/
 /usr/bin/storm

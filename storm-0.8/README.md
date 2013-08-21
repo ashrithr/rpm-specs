@@ -5,11 +5,11 @@ sudo yum -y install rpmdevtools && rpmdev-setuptree
 
 curl https://raw.github.com/ashrithr/rpm-specs/master/storm-0.8/storm.spec -o ~/rpmbuild/SPECS/storm.spec
 
-curl https://dl.dropbox.com/u/133901206/storm-0.8.2.zip -o ~/rpmbuild/SOURCES/storm-0.8.2.zip
+wget https://dl.dropbox.com/u/133901206/storm-0.8.2.zip -O ~/rpmbuild/SOURCES/storm-0.8.2.zip
 
 curl https://raw.github.com/ashrithr/rpm-specs/master/storm-0.8/storm -o ~/rpmbuild/SOURCES/storm
 
-curl https://raw.github.com/ashrithr/rpm-specs/master/storm-0.8/storm-niumbus -o ~/rpmbuild/SOURCES/storm-nimbus
+curl https://raw.github.com/ashrithr/rpm-specs/master/storm-0.8/storm-nimbus -o ~/rpmbuild/SOURCES/storm-nimbus
 
 curl https://raw.github.com/ashrithr/rpm-specs/master/storm-0.8/storm-ui -o ~/rpmbuild/SOURCES/storm-ui
 
