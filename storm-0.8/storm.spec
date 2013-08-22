@@ -140,7 +140,7 @@ getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Dae
 %{storm_home}/*
 %attr(755,%{storm_user},%{storm_group}) %{storm_home}/bin/*
 /etc/storm/
-/etc/rc.d/
+%attr(755,root,root) /etc/init.d/storm-*
 /var/log/*
 /var/run/storm/
 /usr/bin/storm
