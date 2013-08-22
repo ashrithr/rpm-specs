@@ -4,6 +4,7 @@
 %define release_version 1
 %define storm_home /opt/%{storm_name}-%{storm_version}
 %define etc_storm /etc/%{name}
+%define etc_initd /etc/init.d
 %define storm_user storm
 %define storm_group storm
 
@@ -88,11 +89,11 @@ mkdir -p %{buildroot}/%{storm_home}/log4j/
 mkdir -p %{buildroot}/%{storm_home}/bin/
 mkdir -p %{buildroot}/%{storm_home}/logs/
 mkdir -p %{buildroot}/%{storm_home}/public/
-mkdir -p %{buildroot}/%{_initrddir}
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/
 mkdir -p %{buildroot}/%{_sysconfdir}/security/limits.d/
 mkdir -p %{buildroot}/var/log/
 mkdir -p %{buildroot}/%{etc_storm}
+mkdir -p %{buildroot}/%{etc_initd}
 mkdir -p %{buildroot}/usr/bin
 mkdir -p %{buildroot}/var/run/storm/
 mkdir -p %{buildroot}/%{storm_home}/local/
@@ -112,9 +113,9 @@ cd %{buildroot}/%{etc_storm}
 ln -s %{storm_home}/conf conf
 cd -
 
-cp %_sourcedir/storm-nimbus       %{buildroot}/%{_initrddir}/storm-nimbus
-cp %_sourcedir/storm-ui           %{buildroot}/%{_initrddir}/storm-ui
-cp %_sourcedir/storm-supervisor   %{buildroot}/%{_initrddir}/storm-supervisor
+cp %_sourcedir/storm-nimbus       %{buildroot}/%{etc_initd}/storm-nimbus
+cp %_sourcedir/storm-ui           %{buildroot}/%{etc_initd}/storm-ui
+cp %_sourcedir/storm-supervisor   %{buildroot}/%{etc_initd}/storm-supervisor
 cp %_sourcedir/storm              %{buildroot}/%{_sysconfdir}/sysconfig/storm
 cp %_sourcedir/storm.nofiles.conf %{buildroot}/%{_sysconfdir}/security/limits.d/storm.nofiles.conf
 
